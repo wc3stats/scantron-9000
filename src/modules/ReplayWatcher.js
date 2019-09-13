@@ -1,7 +1,8 @@
 import path from 'path';
-import { isset, inArray } from 'scantron/util';
+import discord from 'discord.js';
+import { isset, inArray, getVar } from 'scantron/util';
 import { logger } from 'scantron/logger';
-import { matches } from 'scantron/discord';
+import { getEmoji, matches } from 'scantron/discord';
 import { upload } from 'scantron/w3s';
 import Module from 'scantron/Module';
 
@@ -38,7 +39,31 @@ class ReplayWatcher extends Module
 
         let res = await upload (attachment.url);
 
-        console.log (res);
+        /** **/
+
+        let embed = new discord
+          .RichEmbed ()
+          .setTitle (res.body.data.game.name)
+          .setURL (`https://wc3stats.com/games/${res.body.id}`)
+          .setAuthor ('Warcraft III Stats', 'https://wc3stats.com/assets/favicon.png', 'https://discord.gg/N3VGkUM')
+          .setColor (res.body.data.game.hasW3mmd ? '#1b9601' : '#db2300')
+          .setTimestamp ()
+          .setFooter ('wc3stats.com', 'https://wc3stats.com/assets/favicon.png');
+
+        let players = res.body.data.game.players;
+
+        let body = '';
+
+        for (let player of players) {
+          let emoji = getEmoji (player.colour);
+          body += `<:${emoji.name}:${emoji.id}> **${player.name}** (${player.apm} APM)\n`;
+        }
+
+        embed.addField ('Players', body);
+
+        message
+          .channel
+          .send (embed);
       }
     });
   }

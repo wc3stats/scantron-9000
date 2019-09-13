@@ -32,7 +32,8 @@ let config = {
 
   discord: {
     token: process.env.DISCORD_TOKEN,
-    status: 'wc3stats.com'
+    status: 'wc3stats.com',
+    emojis: 'Deathknell'
   },
 
   modules: {
