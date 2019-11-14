@@ -1,5 +1,6 @@
 import path from 'path';
 import discord from 'discord.js';
+import dict from 'scantron/dict';
 import { isset, inArray, getVar } from 'scantron/util';
 import { logger } from 'scantron/logger';
 import { getEmoji, matches } from 'scantron/discord';
@@ -46,7 +47,7 @@ class ReplayWatcher extends Module
           .setTitle (res.body.data.game.name)
           .setURL (`https://wc3stats.com/games/${res.body.id}`)
           .setAuthor ('Warcraft III Stats', 'https://wc3stats.com/assets/favicon.png', 'https://discord.gg/N3VGkUM')
-          .setColor (res.body.data.game.hasW3mmd ? '#1b9601' : '#db2300')
+          .setColor (res.body.data.game.hasW3MMD ? '#1b9601' : '#db2300')
           .setTimestamp ()
           .setFooter ('wc3stats.com', 'https://wc3stats.com/assets/favicon.png');
 
@@ -55,7 +56,7 @@ class ReplayWatcher extends Module
         let body = '';
 
         for (let player of players) {
-          let emoji = getEmoji (player.colour);
+          let emoji = getEmoji (dict.colours [player.colour]);
           body += `<:${emoji.name}:${emoji.id}> **${player.name}** (${player.apm} APM)\n`;
         }
 
