@@ -38,6 +38,10 @@ let config = {
 
   modules: {
     replayWatcher: {
+      allowedExtensions: [
+        '.w3g'
+      ],
+
       watch: [
         {
           guild: 'Deathknell',
