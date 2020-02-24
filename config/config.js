@@ -27,13 +27,15 @@ dotenv.config ({
 |
 */
 
+import Pattern from 'scantron/Pattern';
+
 let config = {
   argv: minimist (process.argv.slice (2)),
 
   discord: {
-    token: process.env.DISCORD_TOKEN,
-    status: 'wc3stats.com',
-    emojis: 'Deathknell'
+    token  : process.env.DISCORD_TOKEN,
+    status : 'wc3stats.com',
+    emojis : 'Deathknell'
   },
 
   modules: {
@@ -46,8 +48,44 @@ let config = {
         {
           guild: 'Deathknell',
           channels: [
-            'general',
+            'test',
             '455928346547585024'
+          ]
+        },
+
+        {
+          guild: 'M.Z.I Series',
+          channels: [
+            'replays'
+          ]
+        }
+      ]
+    },
+
+
+    /**
+     * Game Watcher Subscription Patterns:
+     *
+     * {
+     *    name   : <pattern>,
+     *    server : <pattern>,
+     *    map    : <pattern>,
+     *    host   : <pattern>
+     * }
+     *
+     */
+    gameWatcher: {
+      updateInterval: 5000,
+
+      subscriptions: [
+        {
+          guild: 'Deathknell',
+          channel: '681316014344241172',
+          ping: true,
+
+          patterns: [
+            // new Pattern ({
+            // })
           ]
         }
       ]

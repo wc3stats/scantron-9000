@@ -1,8 +1,8 @@
 import path from 'path';
-import { isset, inArray } from 'scantron/util';
-import { logger } from 'scantron/logger';
+import { inArray } from 'scantron/util';
 import { matches } from 'scantron/discord';
 import { upload } from 'scantron/w3s';
+import logger from 'scantron/logger';
 import Module from 'scantron/Module';
 import View from 'scantron/View';
 
@@ -12,13 +12,16 @@ import View from 'scantron/View';
  */
 class ReplayWatcher extends Module
 {
+  constructor (client, config) {
+    super (client, config);
+
+    this.requireKeys ([
+      'watch'
+    ]);
+  }
+
   async run ()
   {
-    if (!isset (this.config, 'watch')) {
-      logger.error ('Missing configuration key: [watch].');
-      return;
-    }
-
     this.client.on (
       'message',
       this

@@ -11,6 +11,7 @@
 ## Features
 
 * Automatically upload posted replay files to wc3stats.com.
+* Automatically post games hosted on Warcraft III to a Discord channel.
 
 ## Discord Setup
 

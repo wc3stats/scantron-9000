@@ -36,6 +36,7 @@ client.on ('ready', async () => {
   /** **/
 
   init ('ReplayWatcher');
+  init ('GameWatcher');
 
   /** **/
 
