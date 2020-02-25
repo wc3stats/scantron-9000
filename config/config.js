@@ -85,7 +85,40 @@ let config = {
 
           patterns: [
             // new Pattern ({
+            //   map: /Azeroth Wars/i
             // })
+          ]
+        },
+
+        {
+          guild: 'Azeroth Wars LR',
+          channel: '570772796666544138',
+          ping: true,
+
+          patterns: [
+            new Pattern ({
+              map: /Azeroth Wars/i,
+              slotsTaken: /[5-9]|1[0-9]/
+            })
+          ]
+        },
+
+        {
+          guild: 'Broken Alliances',
+          channel: '674781657697353751',
+          // ping: true,
+
+          colours: {
+            open    : 'green',
+            closing : 'green',
+            closed  : 'red',
+            started : 'red'
+          },
+
+          patterns: [
+            new Pattern ({
+              map: /Broken Alliances/i
+            })
           ]
         }
       ]

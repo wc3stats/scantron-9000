@@ -61,6 +61,10 @@ class ReplayWatcher extends Module
           .send (embed);
     }
   }
+
+  async destroy ()
+  {
+  }
 }
 
 module.exports = ReplayWatcher;

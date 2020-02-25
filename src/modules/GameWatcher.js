@@ -101,6 +101,13 @@ class GameWatcher extends Module
       delete this.messages [gameId];
     }
   }
+
+  async destroy ()
+  {
+    for (let gameId in this.messages) {
+      await this.messages [gameId].erase ();
+    }
+  }
 }
 
 module.exports = GameWatcher;

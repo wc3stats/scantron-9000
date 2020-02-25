@@ -29,14 +29,16 @@ import { lcfirst } from 'scantron/util';
 
 global.client = new Client ();
 
+let controllers = [];
+
 client.on ('ready', async () => {
   logger.info (`Logged in as ${client.user.tag}.`);
   client.user.setActivity (config.discord.status);
 
   /** **/
 
-  init ('ReplayWatcher');
-  init ('GameWatcher');
+  controllers.push (init ('ReplayWatcher'));
+  controllers.push (init ('GameWatcher'));
 
   /** **/
 
@@ -60,15 +62,20 @@ async function cleanup () {
   logger.info (`Cleaning up.`);
 
   try {
+    for (let controller of controllers) {
+      await controller.destroy ();
+    }
+
     client.destroy ();
   } catch (e) {
+    logger.error (e);
     logger.error (`Cleanup failed.`);
   }
 
   process.exit ();
 }
 
-async function init (module) {
+function init (module) {
   logger.info (`Initializing module: ${module}.`);
 
   let controller, settings;
