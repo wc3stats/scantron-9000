@@ -17,9 +17,6 @@ class GameWatcher extends Module
       'subscriptions'
     ]);
 
-    /**
-     * Map from gameId to messages.
-     */
     this.messages = {};
   }
 
@@ -51,11 +48,14 @@ class GameWatcher extends Module
          * Does any pattern for this channel match one of the games?
          */
         for (let game of gamelist) {
+
+          let key = `${subscription.channel}${game.id}`;
+
           /**
            * Key lookups are O(1) so keep a map of gameIds so we know what to
            * delete later.
            */
-          gameIds [game.id] = null;
+          gameIds [key] = null;
 
           /** **/
 
@@ -63,7 +63,7 @@ class GameWatcher extends Module
             continue;
           }
 
-          if (! (game.id in this.messages)) {
+          if (! (key in this.messages)) {
             message = new Message (
               subscription,
               game
@@ -72,12 +72,12 @@ class GameWatcher extends Module
             /** **/
 
             if (await message.create ()) {
-              this.messages [game.id] = message;
+              this.messages [key] = message;
             }
 
           } else {
-            message = this.messages [game.id];
-            await message.update (game)
+            message = this.messages [key];
+            await message.update (game);
           }
         }
       }
