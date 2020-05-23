@@ -30,82 +30,53 @@ class GameWatcher extends Module
 
   async updateLoop ()
   {
-    let gamelist;
-    let subscription;
-    let pattern;
-    let message;
-    let game;
-    let gameIds;
+    let gamelist = await getGamelist ();
 
-    gameIds  = {};
-    gamelist = await getGamelist ();
-
-    /** **/
-
-    for (subscription of this.config.subscriptions) {
-      for (pattern of subscription.patterns) {
-        /**
-         * Does any pattern for this channel match one of the games?
-         */
+    for (let subscription of this.config.subscriptions) {
+      for (let pattern of subscription.patterns) {
         for (let game of gamelist) {
-
-          let key = `${subscription.channel}${game.id}`;
-
-          /**
-           * Key lookups are O(1) so keep a map of gameIds so we know what to
-           * delete later.
-           */
-          gameIds [key] = null;
-
-          /** **/
+          let key = `${subscription.channel}-${game.id}`;
 
           if (!pattern.matches (game)) {
             continue;
           }
 
+          // console.log (key);
+          // console.log (Object.keys (this.messages));
+
           if (! (key in this.messages)) {
-            message = new Message (
+            // New Message.
+            let message = new Message (
               subscription,
               game
             );
 
-            /** **/
-
-            if (await message.create ()) {
-              this.messages [key] = message;
-            }
-
+            await message.create ();
+            this.messages [key] = message;
           } else {
-            message = this.messages [key];
+            let message = this.messages [key];
             await message.update (game);
           }
         }
       }
-    }
 
-    /**
-     * Do we need to delete anything?
-     */
-    for (let gameId in this.messages) {
-      /**
-       * Does game still exist in gamelist?
-       */
-      if (gameId in gameIds) {
-        continue;
+      let gameIds = gamelist.map (g => g.id);
+
+      for (let key in this.messages) {
+        let message = this.messages [key];
+
+        if (!gameIds.includes (message.game.id)) {
+          await message.delete ();
+          delete this.messages [key];
+        }
       }
-
-      message = this.messages [gameId];
-
-      await message.delete ();
-
-      delete this.messages [gameId];
     }
   }
 
   async destroy ()
   {
-    for (let gameId in this.messages) {
-      await this.messages [gameId].erase ();
+    for (let key in this.messages) {
+      await this.messages [key].erase ();
     }
   }
 }

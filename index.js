@@ -39,6 +39,7 @@ client.on ('ready', async () => {
 
   controllers.push (init ('ReplayWatcher'));
   controllers.push (init ('GameWatcher'));
+  controllers.push (init ('ClanWatcher'));
 
   /** **/
 
