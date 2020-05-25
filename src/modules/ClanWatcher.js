@@ -48,17 +48,18 @@ class ClanWatcher extends Module
           }
 
           members.push ({
-            name: member [1].user.username,
+            name: member [1].nickname || member [1].user.username,
             clan,
             rank
           });
         }
 
         updateClan ({
-          name: subscription.guild,
+          community: subscription.guild,
           members
         });
       }
+    // }, 1000);
     }, this.config.updateInterval);
   }
 

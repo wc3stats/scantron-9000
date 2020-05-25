@@ -59,16 +59,16 @@ class GameWatcher extends Module
           }
         }
       }
+    }
 
-      let gameIds = gamelist.map (g => g.id);
+    let gameIds = gamelist.map (g => g.id);
 
-      for (let key in this.messages) {
-        let message = this.messages [key];
+    for (let key in this.messages) {
+      let message = this.messages [key];
 
-        if (!gameIds.includes (message.game.id)) {
-          await message.delete ();
-          delete this.messages [key];
-        }
+      if (!gameIds.includes (message.game.id)) {
+        await message.delete ();
+        delete this.messages [key];
       }
     }
   }

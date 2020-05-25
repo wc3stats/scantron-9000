@@ -83,6 +83,7 @@ let config = {
         {
           guild: 'Broken Alliances',
           channel: '713810806864871424',
+          clean: true,
           // ping: true,
 
           // colours: {
@@ -114,7 +115,7 @@ let config = {
     },
 
     clanWatcher: {
-      updateInterval: 1000 * 60 * 10,
+      updateInterval: 1000 * 60 * 1,
 
       subscriptions: [
         {
