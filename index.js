@@ -1,95 +1,85 @@
-import 'module-alias/register';
+require ('module-alias/register');
 
-/*
-|--------------------------------------------------------------------------
-| Load Configuration
-|--------------------------------------------------------------------------
-|
-| The bot configuration includes general parameters and the guild / channel
-| listeners. Guilds are made up of channels which can subscribe to
-| listeners. When a listener has matched a game from a data source, a post
-| will be made for all channels that have subscribed to that listener.
-|
-*/
+let printf = require ('printf');
+let config = require ('@/config');
+let { discord } = require ('@/lib/discord');
 
-import config from 'scantron/config';
-import logger from 'scantron/logger';
+discord.on ('ready', () => {
+  printf (process.stdout, "Logged in as [%s]\n", discord.user.tag);
+  discord.user.setActivity (config.discord.status);
 
-/*
-|--------------------------------------------------------------------------
-| Main Routine
-|--------------------------------------------------------------------------
-|
-| Establish Discord connection and start listening!
-|
-*/
-
-import { Client }  from 'discord.js';
-import { lcfirst } from 'scantron/util';
-
-global.client = new Client ();
-
-let controllers = [];
-
-client.on ('ready', async () => {
-  logger.info (`Logged in as ${client.user.tag}.`);
-  client.user.setActivity (config.discord.status);
-
-  /** **/
-
-  controllers.push (init ('ReplayWatcher'));
-  controllers.push (init ('GameWatcher'));
-  controllers.push (init ('ClanWatcher'));
-
-  /** **/
-
-  process.on ('SIGINT',  cleanup);
-  process.on ('SIGTERM', cleanup);
-
-  process.on ('unhandledRejection', (reason, promise) => {
-    try {
-      throw reason;
-    } catch (e) {
-      logger.error (e);
-    }
-  });
-
-  process.on ('uncaughtException', (e) => {
-    logger.error (e.toString ());
-  });
+  require ('@/plugins/monitor-clans').main ();
+  require ('@/plugins/monitor-lobbies').main ();
 });
 
-async function cleanup () {
-  logger.info (`Cleaning up.`);
+discord.login (config.discord.token);
 
-  try {
-    for (let controller of controllers) {
-      await controller.destroy ();
-    }
+// import { Client }  from 'discord.js';
+// import { lcfirst } from 'scantron/util';
 
-    client.destroy ();
-  } catch (e) {
-    logger.error (e);
-    logger.error (`Cleanup failed.`);
-  }
+// global.client = new Client ();
 
-  process.exit ();
-}
+// let controllers = [];
 
-function init (module) {
-  logger.info (`Initializing module: ${module}.`);
+// client.on ('ready', async () => {
+//   logger.info (`Logged in as ${client.user.tag}.`);
+//   client.user.setActivity (config.discord.status);
 
-  let controller, settings;
+//   /** **/
 
-  settings = config.modules [lcfirst (module)] || {};
+//   // controllers.push (init ('ReplayWatcher'));
+//   // controllers.push (init ('GameWatcher'));
+//   controllers.push (init ('ClanWatcher'));
 
-  controller = require (`scantron/src/modules/${module}`);
-  controller = new controller (client, settings);
-  controller.run ();
+//   /** **/
 
-  return controller;
-}
+//   process.on ('SIGINT',  cleanup);
+//   process.on ('SIGTERM', cleanup);
 
-/** **/
+//   process.on ('unhandledRejection', (reason, promise) => {
+//     try {
+//       throw reason;
+//     } catch (e) {
+//       logger.error (e);
+//     }
+//   });
 
-client.login (config.discord.token);
+//   process.on ('uncaughtException', (e) => {
+//     logger.error (e.toString ());
+//   });
+// });
+
+// async function cleanup () {
+//   logger.info (`Cleaning up.`);
+
+//   try {
+//     for (let controller of controllers) {
+//       await controller.destroy ();
+//     }
+
+//     client.destroy ();
+//   } catch (e) {
+//     logger.error (e);
+//     logger.error (`Cleanup failed.`);
+//   }
+
+//   process.exit ();
+// }
+
+// function init (module) {
+//   logger.info (`Initializing module: ${module}.`);
+
+//   let controller, settings;
+
+//   settings = config.modules [lcfirst (module)] || {};
+
+//   controller = require (`scantron/src/modules/${module}`);
+//   controller = new controller (client, settings);
+//   controller.run ();
+
+//   return controller;
+// }
+
+// /** **/
+
+// client.login (config.discord.token);

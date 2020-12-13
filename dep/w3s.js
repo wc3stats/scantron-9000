@@ -6,7 +6,7 @@ import logger from 'scantron/logger';
 const endpoints = {
   upload   : 'https://api.wc3stats.com/upload',
   gamelist : 'https://api.wc3stats.com/gamelist',
-  clans    : 'https://api.wc3stats.com/clans/update'
+  clans    : 'https://api.wc3stats.com/v2/client/clans'
 };
 
 /** **/
@@ -43,13 +43,11 @@ export async function getGamelist () {
   return gamelist;
 }
 
-export async function updateClan (clan) {
-  logger.info (`Updating clans in server [${clan.community}], [${clan.members.length}] members.`);
-
+export async function updateClan (members) {
   return request.post (
     endpoints.clans,
     {
-      body: clan,
+      body: members,
       json: true
     }
   );
