@@ -12,7 +12,7 @@ config.argv = argv;
 config.discord = {
   token  : process.env.DISCORD_TOKEN,
   status : 'wc3stats.com',
-  emojis : 'Deathknell'
+  emojis : '454365223021707265'
 };
 
 // --

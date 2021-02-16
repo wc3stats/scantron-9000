@@ -130,7 +130,7 @@ async function deleteGame (m)
       `,
         detag (g.host),
         DOMMYYYY (g.created),
-        g.started ? "started after" : "was open for",
+        g.started ? "started after" : "was closed after",
         HMS (g.uptime)))
       .setColor (g.started ? colors.purple : colors.red);
 

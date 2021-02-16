@@ -10,6 +10,7 @@ discord.on ('ready', () => {
 
   require ('@/plugins/monitor-clans').main ();
   require ('@/plugins/monitor-lobbies').main ();
+  require ('@/plugins/monitor-replays').main ();
 });
 
 discord.login (config.discord.token);
