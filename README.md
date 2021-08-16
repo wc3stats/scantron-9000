@@ -30,7 +30,6 @@ You will also need to edit `config/config.js` as appropriate.
 ## Running the Bot
 
 * **Dependencies** -- `npm install`
-* **Compiling** -- `npm run build`
 * **Running** -- `npm run start`
 
 If you are on linux, `screen` is fantastic to persistently run programs.
