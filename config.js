@@ -17,27 +17,27 @@ config.discord = {
 
 // --
 
-config.clans = {
-  rate: 1000 * 60 * 1,
+// config.clans = {
+//   rate: 1000 * 60 * 1,
 
-  guilds: [
-    {
-      // Broken Alliances
-      id: '245688273937104897',
+//   guilds: [
+//     {
+//       // Broken Alliances
+//       id: '245688273937104897',
 
-      lang: {
-        clan: /Clan (.*)/,
+//       lang: {
+//         clan: /Clan (.*)/,
 
-        ranks: [
-          { rank: 'Chieftain', level: 1 },
-          { rank: 'Shaman', level: 2 },
-          { rank: 'Grunt', level: 3 },
-          { rank: 'Peon', level: 4 }
-        ]
-      }
-    }
-  ]
-};
+//         ranks: [
+//           { rank: 'Chieftain', level: 1 },
+//           { rank: 'Shaman', level: 2 },
+//           { rank: 'Grunt', level: 3 },
+//           { rank: 'Peon', level: 4 }
+//         ]
+//       }
+//     }
+//   ]
+// };
 
 // --
 
@@ -47,7 +47,7 @@ config.lobbies = {
       // Broken Alliances
       id: '245688273937104897',
       channel: '721485109764554865',
-      ping: false,
+      ping: '@here',
       clean: true,
 
       patterns: [
