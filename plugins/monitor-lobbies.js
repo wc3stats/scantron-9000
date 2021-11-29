@@ -8,19 +8,9 @@ let M = {};
 
 function main ()
 {
-  let wss = new ws ('ws://ws.wc3stats.com');
+  let ws = new ws ('ws://ws.wc3stats.com');
 
-  wss.on ('open', () => {
-    wss.on ('message', (m) => {
-      m = JSON.parse (m);
-
-      switch (m.messageType) {
-        case 'GameListCreate': createGame (m.message); break;
-        case 'GameListUpdate': updateGame (m.message); break;
-        case 'GameListDelete': deleteGame (m.message); break;
-      }
-    });
-
+  ws.on ('open', () => {
     let m = JSON.stringify ({
       messageType: "Subscribe",
       message: [
@@ -28,8 +18,24 @@ function main ()
       ]
     });
 
-    wss.send (m);
+    ws.send (m);
   });
+  ws.on ('message', (m) => {
+    m = JSON.parse (m);
+
+    switch (m.messageType) {
+      case 'GameListCreate': createGame (m.message); break;
+      case 'GameListUpdate': updateGame (m.message); break;
+      case 'GameListDelete': deleteGame (m.message); break;
+    }
+  });
+  ws.on ('close', () => {
+    setTimeout (main, 250+ Math.random()*2750);
+  });
+  ws.on ('error', (event) => {
+    console.error("WebSocket error observed:", event);
+  });
+
 }
 
 async function createGame (m)
