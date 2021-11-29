@@ -1,4 +1,4 @@
-let ws = require ('ws');
+let wsc = require ('ws');
 let printf = require ('printf');
 let config = require ('@/config');
 let { discord, embed } = require ('@/lib/discord');
@@ -8,7 +8,7 @@ let M = {};
 
 function main ()
 {
-  let ws = new ws ('ws://ws.wc3stats.com');
+  let ws = new wsc ('ws://ws.wc3stats.com');
 
   ws.on ('open', () => {
     let m = JSON.stringify ({
@@ -36,9 +36,8 @@ function main ()
   });
   
   ws.on ('error', (event) => {
-    console.error ("WebSocket error observed:", event);
+    console.error ("WebSocket error observed: ", event);
   });
-
 }
 
 async function createGame (m)
