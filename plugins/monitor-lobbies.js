@@ -20,6 +20,7 @@ function main ()
 
     ws.send (m);
   });
+  
   ws.on ('message', (m) => {
     m = JSON.parse (m);
 
@@ -29,11 +30,13 @@ function main ()
       case 'GameListDelete': deleteGame (m.message); break;
     }
   });
+  
   ws.on ('close', () => {
-    setTimeout (main, 250+ Math.random()*2750);
+    setTimeout (main, 250 + Math.random () * 2750);
   });
+  
   ws.on ('error', (event) => {
-    console.error("WebSocket error observed:", event);
+    console.error ("WebSocket error observed:", event);
   });
 
 }
